@@ -1,17 +1,23 @@
 #!/usr/bin/python3
-"""Lists states"""
-
+"""List states starting with 'N' module."""
 import MySQLdb
-from sys import argv
+import sys
+
 
 if __name__ == "__main__":
-    conn = MySQLdb.connect(host="localhost", port=3306, user=argv[1],
-                           passwd=argv[2], db=argv[3], charset="utf8")
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM states ORDER BY states.id ASC")
-    query_rows = cur.fetchall()
-    for row in query_rows:
-        if row[1].startswith("N"):
+    connect = MySQLdb.connect(
+                                host="localhost",
+                                port=3306,
+                                user=sys.argv[1],
+                                passwd=sys.argv[2],
+                                db=sys.argv[3],
+                                charset="utf8"
+                             )
+    cursor = connect.cursor()
+    cursor.execute("SELECT * FROM states ORDER BY id ASC")
+    response = cursor.fetchall()
+    for row in response:
+        if row[1][0] == 'N':
             print(row)
-    cur.close()
-    conn.close()
+    cursor.close()
+    connect.close()
